@@ -4,16 +4,30 @@ import java.util.Queue;
 
 import events.Event;
 
-public class Scheduler {
-	Queue<Job> jobQueue;
-	Queue<Event> eventQueue;
-	int serverCount;
-	int availableServers;
-	double lambda;
-	double serviceTimeAverage;
-	boolean isExponentialDeadline;
-	int maxJobCount;
-	int clock;
+public class Simulator {
+	private Queue<Job> jobQueue;
+	private Queue<Event> eventQueue;
+	private int serverCount;
+	private int availableServers;
+	private double lambda;
+	private double serviceTimeAverage;
+	private boolean isExponentialDeadline;
+	private int population;
+	private int totalJobCreated;
+	private double clock;
+	
+	public Simulator(int population)
+	{
+		this.population = population;
+	}
+	
+	public double getLambda() {
+		return lambda;
+	}
+
+	public void setLambda(double lambda) {
+		this.lambda = lambda;
+	}
 	
 	private Job generateNewJob()
 	{
@@ -35,5 +49,15 @@ public class Scheduler {
 	public boolean isServerAvailable()
 	{
 		return availableServers>0?true:false;
+	}
+	
+	public void resetJobGenerator()
+	{
+		totalJobCreated = 0;
+	}
+	
+	public void simulate()
+	{
+		
 	}
 }

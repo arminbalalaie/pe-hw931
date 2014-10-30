@@ -28,4 +28,15 @@ public class JobQueue
 		return jobs.poll();
 	}
 	
+	
+	public boolean isEmpty() {
+		return jobs.isEmpty();
+	}
+
+	public boolean isFull() {
+		return jobs.size() >= this.queueSize ? true : false;
+	}
+
+
+	
 }

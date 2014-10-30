@@ -1,9 +1,8 @@
 package events;
 
-import java.beans.EventHandler;
-
 import simulator.EventsHeap;
 import simulator.Job;
+import simulator.JobQueue;
 import simulator.Simulator;
 
 public abstract class Event {
@@ -11,11 +10,13 @@ public abstract class Event {
 	protected Job job;
 	protected EventsHeap heap;
 	protected Simulator simulator;
+	protected JobQueue jobQueue;
 
-	public Event(EventsHeap heap, Job job, double triggerTime) {
+	public Event(EventsHeap heap, Job job, double triggerTime, JobQueue jobQueue) {
 		this.heap = heap;
 		this.job = job;
 		this.triggerTime = triggerTime;
+		this.jobQueue = jobQueue;
 	}
 
 	public double getTriggerTime() {

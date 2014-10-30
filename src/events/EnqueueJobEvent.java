@@ -2,24 +2,28 @@ package events;
 
 import simulator.EventsHeap;
 import simulator.Job;
+import simulator.JobQueue;
 
 public class EnqueueJobEvent extends Event {
 
-	public EnqueueJobEvent(EventsHeap heap, Job job, double triggerTime) {
-		super(heap, job, triggerTime);
+	
+
+	public EnqueueJobEvent(EventsHeap heap, Job job, double triggerTime,
+			JobQueue jobQueue) {
+		super(heap, job, triggerTime, jobQueue);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void doIt() {
-		if (this.simulator.isServerAvailable() && this.simulator.isEmptyQueue()) {
+		if (this.simulator.isServerAvailable() && this.jobQueue.isEmpty()) {
 			EndProcessEvent endProcessEvent = new EndProcessEvent(heap, job,
-					job.getProcessingTime() + this.simulator.getClock());
+					job.getProcessingTime() + this.simulator.getClock(),this.jobQueue);
 			heap.pushToEvents(endProcessEvent);
 			job.startProcess();
-		} else if (!this.simulator.isFullQueue()) {
+		} else if (!this.jobQueue.isFull()) {
 			ExpireJobEvent jobEvent = new ExpireJobEvent(heap, job,
-					job.getDeadlineTime());
+					job.getDeadlineTime(),this.jobQueue);
 			heap.pushToEvents(jobEvent);
 			job.enqueue();
 

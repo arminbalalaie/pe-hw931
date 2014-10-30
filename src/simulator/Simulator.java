@@ -58,17 +58,6 @@ public class Simulator {
 
 	}
 
-	public boolean isEmptyQueue() {
-		return jobQueue.isEmpty();
-	}
-
-	public boolean isFullQueue() {
-		return jobQueue.size() >= 12 ? true : false;
-	}
-
-	public Job getFirstJob() {
-		return jobQueue.poll();
-	}
 
 	public double getClock() {
 		return clock;

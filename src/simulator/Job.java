@@ -30,4 +30,26 @@ public class Job {
 		if(state==JobState.CREATED)
 			state = JobState.BLOCKED;
 	}
+	
+	public void startProcess(){
+		
+	}
+
+	public double getProcessingTime() {
+		return processingTime;
+	}
+
+	public double getCreationTime() {
+		return creationTime;
+	}
+
+	public double getStartTime() {
+		return startTime;
+	}
+
+	public double getDeadlineTime() {
+		return deadlineTime;
+	}
+	
+	
 }

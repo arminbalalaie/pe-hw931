@@ -15,12 +15,11 @@ public class Simulator {
 	private int population;
 	private int totalJobCreated;
 	private double clock;
-	
-	public Simulator(int population)
-	{
+
+	public Simulator(int population) {
 		this.population = population;
 	}
-	
+
 	public double getLambda() {
 		return lambda;
 	}
@@ -28,36 +27,47 @@ public class Simulator {
 	public void setLambda(double lambda) {
 		this.lambda = lambda;
 	}
-	
-	private Job generateNewJob()
-	{
+
+	private Job generateNewJob() {
 		return null;
 	}
-	
-	public void occupyServer()
-	{
-		if(availableServers > 0)
+
+	public void occupyServer() {
+		if (availableServers > 0)
 			availableServers--;
 	}
-	
-	public void releaseServer()
-	{
-		if(availableServers<serverCount)
+
+	public void releaseServer() {
+		if (availableServers < serverCount)
 			availableServers++;
 	}
-	
-	public boolean isServerAvailable()
-	{
-		return availableServers>0?true:false;
+
+	public boolean isServerAvailable() {
+		return availableServers > 0 ? true : false;
 	}
-	
-	public void resetJobGenerator()
-	{
+
+	public void resetJobGenerator() {
 		totalJobCreated = 0;
 	}
-	
-	public void simulate()
-	{
-		
+
+	public void simulate() {
+
 	}
+
+	public boolean isEmptyQueue() {
+		return jobQueue.isEmpty();
+	}
+
+	public boolean isFullQueue() {
+		return jobQueue.size() >= 12 ? true : false;
+	}
+
+	public Job getFirstJob() {
+		return jobQueue.poll();
+	}
+
+	public double getClock() {
+		return clock;
+	}
+
 }

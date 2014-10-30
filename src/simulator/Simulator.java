@@ -5,7 +5,8 @@ import java.util.Queue;
 import events.Event;
 
 public class Simulator {
-	private Queue<Job> jobQueue;
+	private int queueSize = 12;
+	private JobQueue jobQueue;
 	private Queue<Event> eventQueue;
 	private int serverCount;
 	private int availableServers;
@@ -19,6 +20,7 @@ public class Simulator {
 	public Simulator(int population)
 	{
 		this.population = population;
+		jobQueue = new JobQueue(queueSize);
 	}
 	
 	public double getLambda() {

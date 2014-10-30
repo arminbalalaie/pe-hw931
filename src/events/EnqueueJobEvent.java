@@ -26,7 +26,7 @@ public class EnqueueJobEvent extends Event {
 					job.getDeadlineTime(),this.jobQueue);
 			heap.pushToEvents(jobEvent);
 			job.enqueue();
-
+			this.jobQueue.enqueue(job);
 		}else {
 			job.block();
 		}

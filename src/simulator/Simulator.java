@@ -1,13 +1,9 @@
 package simulator;
 
-import java.util.Queue;
-
-import events.Event;
 
 public class Simulator {
 	private int queueSize = 12;
 	private JobQueue jobQueue;
-	private Queue<Event> eventQueue;
 	private int serverCount;
 	private int availableServers;
 	private double lambda;

@@ -1,9 +1,9 @@
 package simulator;
 
-
 public class Simulator {
 	private int queueSize = 12;
 	private JobQueue jobQueue;
+	private EventsHeap eventsHeap;
 	private int serverCount;
 	private int availableServers;
 	private double lambda;
@@ -13,11 +13,11 @@ public class Simulator {
 	private int totalJobCreated;
 	private double clock;
 
-	public Simulator(int population, boolean isExponential)
-	{
+	public Simulator(int population, boolean isExponential) {
 		this.population = population;
 		isExponentialDeadline = isExponential;
 		jobQueue = new JobQueue(queueSize);
+		this.eventsHeap = new EventsHeap(10000);
 	}
 
 	public double getLambda() {
@@ -53,7 +53,6 @@ public class Simulator {
 	public void simulate() {
 
 	}
-
 
 	public double getClock() {
 		return clock;

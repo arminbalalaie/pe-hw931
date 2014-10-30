@@ -17,9 +17,10 @@ public class Simulator {
 	private int totalJobCreated;
 	private double clock;
 	
-	public Simulator(int population)
+	public Simulator(int population, boolean isExponential)
 	{
 		this.population = population;
+		isExponentialDeadline = isExponential;
 		jobQueue = new JobQueue(queueSize);
 	}
 	

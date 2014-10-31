@@ -20,6 +20,7 @@ public class EndProcessEvent extends Event {
 		Job newJob = simulator.getJobQueue().dequeue();
 		if(newJob!=null)
 		{
+			simulator.occupyServer();
 			newJob.startProcess();
 			EndProcessEvent event = new EndProcessEvent(simulator, newJob,
 				newJob.getProcessingTime() + this.simulator.getClock());

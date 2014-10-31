@@ -3,15 +3,16 @@ package events;
 import simulator.EventsHeap;
 import simulator.Job;
 import simulator.JobQueue;
+import simulator.Simulator;
 
 public class ExpireJobEvent extends Event {
 
 
 	
 
-	public ExpireJobEvent(EventsHeap heap, Job job, double triggerTime,
-			JobQueue jobQueue) {
-		super(heap, job, triggerTime, jobQueue);
+	public ExpireJobEvent(Simulator simulator, Job job, double triggerTime)
+	{
+		super(simulator, job, triggerTime);
 		// TODO Auto-generated constructor stub
 	}
 

@@ -1,27 +1,22 @@
 package events;
 
-import simulator.EventsHeap;
 import simulator.Job;
-import simulator.JobQueue;
+import simulator.Simulator;
 
 public class CreateJobEvent extends Event {
 
-	public CreateJobEvent(EventsHeap heap, Job job, double triggerTime,
-			JobQueue jobQueue) {
-		super(heap, job, triggerTime, jobQueue);
+	public CreateJobEvent(Simulator simulator, Job job, double triggerTime)
+	{
+		super(simulator, job, triggerTime);
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void doIt() {
-		EnqueueJobEvent enqueueEvent = new EnqueueJobEvent(this.heap, this.job,
-				this.job.getStartTime(), this.jobQueue);
-		Job newJob = new Job();
-		CreateJobEvent createEvent = new CreateJobEvent(this.heap, newJob,
-				newJob.getCreationTime(), this.jobQueue);
-		this.heap.pushToEvents(enqueueEvent);
-		this.heap.pushToEvents(createEvent);
-
+		Job newJob = simulator.generateNewJob();
+		
+		EnqueueJobEvent enqueueEvent = new EnqueueJobEvent(simulator, newJob, newJob.getStartTime());
+		simulator.getEventsHeap().pushToEvents(enqueueEvent);
 	}
 
 }

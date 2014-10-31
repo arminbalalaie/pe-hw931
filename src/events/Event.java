@@ -8,15 +8,12 @@ import simulator.Simulator;
 public abstract class Event {
 	protected double triggerTime;
 	protected Job job;
-	protected EventsHeap heap;
 	protected Simulator simulator;
-	protected JobQueue jobQueue;
 
-	public Event(EventsHeap heap, Job job, double triggerTime, JobQueue jobQueue) {
-		this.heap = heap;
+	public Event(Simulator simulator, Job job, double triggerTime) {
+		this.simulator = simulator;
 		this.job = job;
 		this.triggerTime = triggerTime;
-		this.jobQueue = jobQueue;
 	}
 
 	public double getTriggerTime() {

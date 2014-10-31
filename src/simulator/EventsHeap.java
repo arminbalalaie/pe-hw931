@@ -39,5 +39,10 @@ public class EventsHeap {
 	public Event popFromEvents() {
 		return events.remove();
 	}
+	
+	public boolean hasEvents()
+	{
+		return !events.isEmpty();
+	}
 
 }

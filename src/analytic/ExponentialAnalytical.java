@@ -1,25 +1,19 @@
 package analytic;
 
-import org.apache.commons.math3.util.CombinatoricsUtils;
 
-// @author Ali Ramezanzadeh
 public class ExponentialAnalytical extends Analytical {
 
-    public ExponentialAnalytical(double lambda, double theta) {
-        super(lambda, theta);
-    }
+	public ExponentialAnalytical(int k, double lambda, double t) {
+		super(k, lambda, t);
+	}
 
-    @Override
-    double phi(int n, int c) {
-
-        // n > 0
-        double nominator = CombinatoricsUtils.factorialDouble(n);
-        double denominator = c;
-
-        for (int i = 1; i <= n; i++) {
-            denominator *= (c + i / theta);
-        }
-        return nominator / denominator;
-    }
-    
+	@Override
+	double phi(int n, int c) {
+		double num1 = this.factorial(n);
+		double num2 = c;
+		for (int i = 1; i < n + 1; i++) {
+			num2 = num1 * (c + i / t);
+		}
+		return num1 / num2;
+	}
 }

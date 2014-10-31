@@ -1,26 +1,21 @@
 package analytic;
 
-import org.apache.commons.math3.util.CombinatoricsUtils;
 
-// @author Ali Ramezanzadeh, Naeim Taheri
 public class ConstantAnalytical extends Analytical {
 
-    public ConstantAnalytical(double lambda, double theta) {
-        super(lambda, theta);
-    }
+	public ConstantAnalytical(int k, double lambda, double t) {
+		super(k, lambda, t);
+	}
 
-    @Override
-    double phi(int n, int c) {
-        // n > 0
-        double head = CombinatoricsUtils.factorialDouble(n) / Math.pow(c, n + 1);
-        double c_theta = c * theta;
-        
-        double SigmaReult = 0;
-        for (int i = 0; i <= n - 1; i++) {
-            SigmaReult += Math.pow(c_theta, i) / CombinatoricsUtils.factorialDouble(i);
-        }
+	@Override
+	double phi(int n, int c) {
+		double num1 = this.factorial(n)
+				/ Math.pow(c, n + 1);
+		double num2 = 0;
+		for (int i = 0; i < n; i++) {
+			num2 += (Math.pow(c * this.t, i) / this.factorial(i));
+		}
+		return num1 * (1 - Math.exp(-(c * this.t)) * num2);
+	}
 
-        return head * (1 - Math.exp(-c_theta) * SigmaReult);
-    }
-    
 }

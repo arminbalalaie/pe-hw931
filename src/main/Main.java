@@ -5,9 +5,11 @@ import simulator.Simulator;
 public class Main {
 
 	public static void main(String[] args) {
-		System.out.println(args.length);
 		if(args.length!=2)
+		{
 			printUsageRules();
+			System.exit(0);
+		}
 		
 		boolean isExponential = Integer.parseInt(args[0])==1?true:false;
 		int population = Integer.parseInt(args[1]);

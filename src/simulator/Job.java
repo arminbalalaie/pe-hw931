@@ -36,6 +36,7 @@ public class Job {
 //		System.out.println("expire");
 		if (state == JobState.SCHEDULED) {
 			state = JobState.EXPIRED;
+			SimulationStatistics.getInstance().incrementExpired();
 			return true;
 		}
 		return false;

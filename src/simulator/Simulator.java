@@ -10,7 +10,7 @@ import events.CreateJobEvent;
 import events.Event;
 
 public class Simulator {
-	private int queueSize = 12;
+	private int queueSize = 10;
 	private JobQueue jobQueue;
 	private EventsHeap eventsHeap;
 	private int serverCount = 2;
@@ -55,7 +55,7 @@ public class Simulator {
 			return null;
 		double processingTime = this.processingRandomGenerator.generate();
 		double startTime = clock + this.arrivalRandomGenerator.generate();
-		double deadlineTime = clock + this.watingRandomGenerator.generate();
+		double deadlineTime = startTime + this.watingRandomGenerator.generate();
 		Job newJob = new Job(processingTime, startTime, deadlineTime);
 		totalJobCreated++;
 		return newJob;
@@ -101,7 +101,7 @@ public class Simulator {
 
 		Analytical anal = isExponentialDeadline?new ExponentialAnalytical(lambda, 2):new ConstantAnalytical(lambda, 2);
 		// print statistics
-		System.out.printf("%2.1f\t%4.3f\t%4.3f\t%4.3f\t%4.3f\t\n", lambda, SimulationStatistics.getInstance().getBlockingProbability()
+		System.out.printf("%2.1f\t%.5f\t%.5f\t%.5f\t%.5f\t\n", lambda, SimulationStatistics.getInstance().getBlockingProbability()
 				, SimulationStatistics.getInstance().getDepartureProbability(),
 				anal.P_Blocked(), anal.P_Deadline());
 //		System.out.println(lambda + "\t"

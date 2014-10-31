@@ -28,6 +28,10 @@ public class JobQueue
 		return jobs.poll();
 	}
 	
+	public void remove(Job job){
+		this.jobs.remove(job);
+	}
+	
 	
 	public boolean isEmpty() {
 		return jobs.isEmpty();

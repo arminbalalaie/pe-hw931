@@ -21,7 +21,7 @@ public class Job {
 	{
 		if(state==null)
 			state = JobState.CREATED;
-	}
+	
 	
 	}
 

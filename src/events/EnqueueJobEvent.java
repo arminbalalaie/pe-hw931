@@ -1,8 +1,6 @@
 package events;
 
-import simulator.EventsHeap;
 import simulator.Job;
-import simulator.JobQueue;
 import simulator.Simulator;
 
 public class EnqueueJobEvent extends Event {
@@ -16,20 +14,26 @@ public class EnqueueJobEvent extends Event {
 
 	@Override
 	public void doIt() {
-		if (this.simulator.isServerAvailable() && simulator.getJobQueue().isEmpty()) {
-			EndProcessEvent endProcessEvent = new EndProcessEvent(simulator, job,
-					job.getProcessingTime() + this.simulator.getClock());
-			simulator.getEventsHeap().pushToEvents(endProcessEvent);
-			job.startProcess();
-		} else if (simulator.getJobQueue().isFull()) {
-			ExpireJobEvent jobEvent = new ExpireJobEvent(simulator, job, job.getDeadlineTime());
-			simulator.getEventsHeap().pushToEvents(jobEvent);
+		if(simulator.getJobQueue().enqueue(job))
+		{
 			job.enqueue();
-			simulator.getJobQueue().enqueue(job);
-		}else {
-			job.block();
+			if (simulator.isServerAvailable() && simulator.getJobQueue().isEmpty()) 
+			{
+				Event endProcessEvent = new EndProcessEvent(simulator, job, job.getStartTime()+job.getProcessingTime());
+				simulator.occupyServer();
+				simulator.getEventsHeap().pushToEvents(endProcessEvent);
+				simulator.getJobQueue().dequeue();
+				job.startProcess();
+			} 
+			else
+			{
+				ExpireJobEvent jobEvent = new ExpireJobEvent(simulator, job, job.getDeadlineTime());
+				simulator.getEventsHeap().pushToEvents(jobEvent);
+			}
+			
 		}
-
+		else
+			job.block();
 	}
 
 }

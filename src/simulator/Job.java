@@ -1,11 +1,22 @@
 package simulator;
 
+import random.ExponentialGenerator;
+import random.RandomGenerator;
+
 public class Job {
 	JobState state;
 	double processingTime;
-	double creationTime;
+//	double creationTime;
 	double startTime;
 	double deadlineTime;
+
+	public Job(double processingTime, double startTime,
+			double deadlineTime) {
+		super();
+		this.processingTime = processingTime;
+		this.startTime = startTime;
+		this.deadlineTime = deadlineTime;
+	}
 
 	public void enqueue() {
 		if (state == JobState.CREATED)
@@ -38,9 +49,7 @@ public class Job {
 		return processingTime;
 	}
 
-	public double getCreationTime() {
-		return creationTime;
-	}
+
 
 	public double getStartTime() {
 		return startTime;

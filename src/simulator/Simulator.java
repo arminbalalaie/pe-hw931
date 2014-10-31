@@ -1,5 +1,8 @@
 package simulator;
 
+import random.ConstantGenerator;
+import random.ExponentialGenerator;
+import random.RandomGenerator;
 import events.CreateJobEvent;
 import events.Event;
 
@@ -7,20 +10,25 @@ public class Simulator {
 	private int queueSize = 12;
 	private JobQueue jobQueue;
 	private EventsHeap eventsHeap;
-	private int serverCount=2;
-	private int availableServers=2;
+	private int serverCount = 2;
+	private int availableServers = 2;
 	private double lambda;
-	private double serviceTimeAverage=1;
+	private double meanWaitTime = 2;
+	private double serviceTimeAverage = 1;
 	private boolean isExponentialDeadline;
 	private int population;
 	private int totalJobCreated;
 	private double clock;
+	private RandomGenerator watingRandomGenerator;
+	private RandomGenerator processingRandomGenerator;
+	private RandomGenerator arrivalRandomGenerator;
 
 	public Simulator(int population, boolean isExponential) {
 		this.population = population;
 		isExponentialDeadline = isExponential;
 		jobQueue = new JobQueue(queueSize);
 		this.eventsHeap = new EventsHeap(10000);
+
 	}
 
 	public JobQueue getJobQueue() {
@@ -40,7 +48,11 @@ public class Simulator {
 	}
 
 	public Job generateNewJob() {
-		return null;
+		double processingTime = this.processingRandomGenerator.generate();
+		double startTime = this.arrivalRandomGenerator.generate();
+		double deadlineTime = this.watingRandomGenerator.generate();
+		Job newJob = new Job(processingTime, startTime, deadlineTime);
+		return newJob;
 	}
 
 	public void occupyServer() {
@@ -61,19 +73,31 @@ public class Simulator {
 		totalJobCreated = 0;
 	}
 
+	public void initRandomGenerators() {
+		if (this.isExponentialDeadline)
+			watingRandomGenerator = new ExponentialGenerator(1 / this.meanWaitTime);
+		else
+			watingRandomGenerator = new ConstantGenerator(this.meanWaitTime);
+		processingRandomGenerator = new ExponentialGenerator(1 / this.serviceTimeAverage);
+		arrivalRandomGenerator = new ExponentialGenerator(this.lambda);
+	}
+
 	public void simulate() {
+		this.initRandomGenerators();
 		SimulationStatistics.getInstance().reset();
 		Event firstEvent = new CreateJobEvent(this, null, clock);
 		eventsHeap.pushToEvents(firstEvent);
-		while(eventsHeap.hasEvents())
-		{
+		while (eventsHeap.hasEvents()) {
 			Event event = eventsHeap.popFromEvents();
 			clock = event.getTriggerTime();
 			event.doIt();
 		}
-		
-		//print statistics
-		System.out.println(lambda + "\t" + SimulationStatistics.getInstance().getBlockingProbability() +  "\t" + SimulationStatistics.getInstance().getDepartureProbability());
+
+		// print statistics
+		System.out.println(lambda + "\t"
+				+ SimulationStatistics.getInstance().getBlockingProbability()
+				+ "\t"
+				+ SimulationStatistics.getInstance().getDepartureProbability());
 	}
 
 	public double getClock() {

@@ -54,8 +54,8 @@ public class Simulator {
 		if(totalJobCreated>=population)
 			return null;
 		double processingTime = this.processingRandomGenerator.generate();
-		double startTime = this.arrivalRandomGenerator.generate();
-		double deadlineTime = this.watingRandomGenerator.generate();
+		double startTime = clock + this.arrivalRandomGenerator.generate();
+		double deadlineTime = clock + this.watingRandomGenerator.generate();
 		Job newJob = new Job(processingTime, startTime, deadlineTime);
 		totalJobCreated++;
 		return newJob;

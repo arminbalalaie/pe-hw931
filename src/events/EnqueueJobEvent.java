@@ -17,7 +17,7 @@ public class EnqueueJobEvent extends Event {
 		if(simulator.getJobQueue().enqueue(job))
 		{
 			job.enqueue();
-			if (simulator.isServerAvailable() && simulator.getJobQueue().isEmpty()) 
+			if (simulator.isServerAvailable() && simulator.getJobQueue().getQueueSize()==1) 
 			{
 				Event endProcessEvent = new EndProcessEvent(simulator, job, job.getStartTime()+job.getProcessingTime());
 				simulator.occupyServer();

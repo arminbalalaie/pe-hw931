@@ -16,11 +16,14 @@ public class EndProcessEvent extends Event {
 	@Override
 	public void doIt() {
 		this.job.finish();
+		simulator.releaseServer();
 		Job newJob = simulator.getJobQueue().dequeue();
-		newJob.startProcess();
-		EndProcessEvent event = new EndProcessEvent(simulator, newJob,
+		if(newJob!=null)
+		{
+			newJob.startProcess();
+			EndProcessEvent event = new EndProcessEvent(simulator, newJob,
 				newJob.getProcessingTime() + this.simulator.getClock());
-		simulator.getEventsHeap().pushToEvents(event);
-
+			simulator.getEventsHeap().pushToEvents(event);
+		}
 	}
 }

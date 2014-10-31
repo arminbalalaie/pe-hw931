@@ -2,9 +2,9 @@ package simulator;
 
 public class SimulationStatistics {
 	private static SimulationStatistics instance=null;
-	private int blocked=0;
-	private int expired=0;
-	private int finished=0;
+	private double blocked=0;
+	private double expired=0;
+	private double finished=0;
 	
 	public SimulationStatistics()
 	{
@@ -35,13 +35,20 @@ public class SimulationStatistics {
 		blocked++;
 	}
 	
+	public void incrementFinished()
+	{
+		finished++;
+	}
+	
 	public double getDepartureProbability()
 	{
+//		System.out.println("finished:" + finished);
 		return finished/(finished+blocked+expired);
 	}
 	
 	public double getBlockingProbability()
 	{
+//		System.out.println("blocked : " + blocked);
 		return blocked/(finished+blocked+expired);
 	}
 }

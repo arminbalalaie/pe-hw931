@@ -11,6 +11,7 @@ public class JobQueue
 	public JobQueue(int size)
 	{
 		queueSize = size;
+		jobs = new LinkedList<Job>();
 	}
 	
 	public boolean enqueue(Job job)
@@ -32,6 +33,10 @@ public class JobQueue
 		this.jobs.remove(job);
 	}
 	
+	public int getQueueSize()
+	{
+		return jobs.size();
+	}
 	
 	public boolean isEmpty() {
 		return jobs.isEmpty();

@@ -19,6 +19,7 @@ public class Job {
 		}
 	public void create()
 	{
+//		System.out.println("Job created : " + this.getStartTime());
 		if(state==null)
 			state = JobState.CREATED;
 	
@@ -26,11 +27,13 @@ public class Job {
 	}
 
 	public void enqueue() {
+//		System.out.println("enqueue");
 		if (state == JobState.CREATED)
 			state = JobState.SCHEDULED;
 	}
 
 	public boolean expire() {
+//		System.out.println("expire");
 		if (state == JobState.SCHEDULED) {
 			state = JobState.EXPIRED;
 			return true;
@@ -39,16 +42,25 @@ public class Job {
 	}
 
 	public void finish() {
+//		System.out.println("finish");
 		if (state == JobState.PROCESSING)
+		{
 			state = JobState.FINISHED;
+			SimulationStatistics.getInstance().incrementFinished();
+		}
 	}
 
 	public void block() {
+//		System.out.println("block");
 		if (state == JobState.CREATED)
+		{
 			state = JobState.BLOCKED;
+			SimulationStatistics.getInstance().incrementBlocked();
+		}
 	}
 
 	public void startProcess() {
+//		System.out.println("Process");
 		if(state==JobState.SCHEDULED)
 			state = JobState.PROCESSING;
 	}

@@ -1,5 +1,8 @@
 package simulator;
 
+import analytic.Analytical;
+import analytic.ConstantAnalytical;
+import analytic.ExponentialAnalytical;
 import random.ConstantGenerator;
 import random.ExponentialGenerator;
 import random.RandomGenerator;
@@ -17,7 +20,7 @@ public class Simulator {
 	private double serviceTimeAverage = 1;
 	private boolean isExponentialDeadline;
 	private int population;
-	private int totalJobCreated;
+	private int totalJobCreated=0;
 	private double clock;
 	private RandomGenerator watingRandomGenerator;
 	private RandomGenerator processingRandomGenerator;
@@ -48,10 +51,13 @@ public class Simulator {
 	}
 
 	public Job generateNewJob() {
+		if(totalJobCreated>=population)
+			return null;
 		double processingTime = this.processingRandomGenerator.generate();
 		double startTime = this.arrivalRandomGenerator.generate();
 		double deadlineTime = this.watingRandomGenerator.generate();
 		Job newJob = new Job(processingTime, startTime, deadlineTime);
+		totalJobCreated++;
 		return newJob;
 	}
 
@@ -93,11 +99,15 @@ public class Simulator {
 			event.doIt();
 		}
 
+		Analytical anal = isExponentialDeadline?new ExponentialAnalytical(lambda, 2):new ConstantAnalytical(lambda, 2);
 		// print statistics
-		System.out.println(lambda + "\t"
-				+ SimulationStatistics.getInstance().getBlockingProbability()
-				+ "\t"
-				+ SimulationStatistics.getInstance().getDepartureProbability());
+		System.out.printf("%2.1f\t%4.3f\t%4.3f\t%4.3f\t%4.3f\t\n", lambda, SimulationStatistics.getInstance().getBlockingProbability()
+				, SimulationStatistics.getInstance().getDepartureProbability(),
+				anal.P_Blocked(), anal.P_Deadline());
+//		System.out.println(lambda + "\t"
+//				+ SimulationStatistics.getInstance().getBlockingProbability()
+//				+ "\t\t\t"
+//				+ SimulationStatistics.getInstance().getDepartureProbability());
 	}
 
 	public double getClock() {

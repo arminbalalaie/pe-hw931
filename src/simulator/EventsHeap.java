@@ -11,7 +11,7 @@ public class EventsHeap {
 	private PriorityQueue<Event> events;
 
 	public EventsHeap(int initialCapacity) {
-		events = new PriorityQueue<>(initialCapacity, new Comparator<Event>() {
+		events = new PriorityQueue<Event>(initialCapacity, new Comparator<Event>() {
 
 			@Override
 			public int compare(Event o1, Event o2) {

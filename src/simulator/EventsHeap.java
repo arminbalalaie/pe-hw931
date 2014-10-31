@@ -45,4 +45,19 @@ public class EventsHeap {
 		return !events.isEmpty();
 	}
 
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		StringBuilder sb = new StringBuilder();
+		if (events.peek() != null)
+			sb.append("head:" + events.peek().getClass() + ":"
+					+ events.peek().getTriggerTime() + "," + " \n");
+		for (Event event : events) {
+			if (event != null)
+				sb.append(event.getClass() + ":" + event.getTriggerTime() + ","
+						+ " ");
+		}
+		return sb.toString();
+	}
+
 }

@@ -46,6 +46,14 @@ public class JobQueue
 		return jobs.size() >= this.queueSize ? true : false;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		for (Job job : jobs) {
+			sb.append(job.getStartTime() + " ");
+		}
+		return sb.toString();
+	}
 
 	
 }

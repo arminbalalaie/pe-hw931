@@ -1,8 +1,6 @@
 package events;
 
-import simulator.EventsHeap;
 import simulator.Job;
-import simulator.JobQueue;
 import simulator.Simulator;
 
 public class EndProcessEvent extends Event {
@@ -19,6 +17,7 @@ public class EndProcessEvent extends Event {
 	public void doIt() {
 		this.job.finish();
 		Job newJob = simulator.getJobQueue().dequeue();
+		newJob.startProcess();
 		EndProcessEvent event = new EndProcessEvent(simulator, newJob,
 				newJob.getProcessingTime() + this.simulator.getClock());
 		simulator.getEventsHeap().pushToEvents(event);

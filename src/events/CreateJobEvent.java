@@ -14,9 +14,11 @@ public class CreateJobEvent extends Event {
 	@Override
 	public void doIt() {
 		Job newJob = simulator.generateNewJob();
-		
-		EnqueueJobEvent enqueueEvent = new EnqueueJobEvent(simulator, newJob, newJob.getStartTime());
+		newJob.create();
+		Event enqueueEvent = new EnqueueJobEvent(simulator, newJob, newJob.getStartTime());
 		simulator.getEventsHeap().pushToEvents(enqueueEvent);
+		Event createEvent = new CreateJobEvent(simulator, null, newJob.getStartTime());
+		simulator.getEventsHeap().pushToEvents(createEvent);
 	}
 
 }

@@ -1,11 +1,17 @@
 package simulator;
 
 public class Job {
-	JobState state;
+	JobState state=null;
 	double processingTime;
 	double creationTime;
 	double startTime;
 	double deadlineTime;
+	
+	public void create()
+	{
+		if(state==null)
+			state = JobState.CREATED;
+	}
 	
 	public void enqueue()
 	{
@@ -32,7 +38,8 @@ public class Job {
 	}
 	
 	public void startProcess(){
-		
+		if(state==JobState.SCHEDULED)
+			state = JobState.PROCESSING;
 	}
 
 	public double getProcessingTime() {

@@ -51,4 +51,10 @@ public class SimulationStatistics {
 //		System.out.println("blocked : " + blocked);
 		return blocked/(finished+blocked+expired);
 	}
+	
+	public double getExpiredProbability()
+	{
+//		System.out.println("blocked : " + blocked);
+		return expired/(finished+blocked+expired);
+	}
 }

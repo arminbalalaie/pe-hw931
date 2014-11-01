@@ -102,7 +102,7 @@ public class Simulator {
 		Analytical anal = isExponentialDeadline?new ExponentialAnalytical(lambda, 2):new ConstantAnalytical(lambda, 2);
 		// print statistics
 		System.out.printf("%2.1f\t%.5f\t%.5f\t%.5f\t%.5f\t\n", lambda, SimulationStatistics.getInstance().getBlockingProbability()
-				, SimulationStatistics.getInstance().getDepartureProbability(),
+				, SimulationStatistics.getInstance().getExpiredProbability(),
 				anal.P_Blocked(), anal.P_Deadline());
 //		System.out.println(lambda + "\t"
 //				+ SimulationStatistics.getInstance().getBlockingProbability()

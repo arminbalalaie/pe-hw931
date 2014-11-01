@@ -88,7 +88,7 @@ public class Simulator {
 		arrivalRandomGenerator = new ExponentialGenerator(this.lambda);
 	}
 
-	public void simulate() {
+	public void simulate(ErrorCalculator blockError, ErrorCalculator expiredError) {
 		this.initRandomGenerators();
 		SimulationStatistics.getInstance().reset();
 		Event firstEvent = new CreateJobEvent(this, null, clock);
@@ -100,10 +100,17 @@ public class Simulator {
 		}
 
 		Analytical anal = isExponentialDeadline?new ExponentialAnalytical(lambda, 2):new ConstantAnalytical(lambda, 2);
+		double analyticBlockingProbability = anal.P_Blocked();
+		double analyticExpirationProbability = anal.P_Deadline();
+		double simulationBlockingProbability = SimulationStatistics.getInstance().getBlockingProbability();
+		double simulationExpirationProbability = SimulationStatistics.getInstance().getExpiredProbability();
+		//calculate error
+		blockError.addError(Math.abs(simulationBlockingProbability-analyticBlockingProbability));
+		expiredError.addError(Math.abs(simulationExpirationProbability-analyticExpirationProbability));
 		// print statistics
-		System.out.printf("%2.1f\t%.5f\t%.5f\t%.5f\t%.5f\t\n", lambda, SimulationStatistics.getInstance().getBlockingProbability()
-				, SimulationStatistics.getInstance().getExpiredProbability(),
-				anal.P_Blocked(), anal.P_Deadline());
+		System.out.printf("%2.1f\t%.5f\t%.5f\t%.5f\t%.5f\t\n", lambda, 
+				simulationBlockingProbability, simulationExpirationProbability,
+				analyticBlockingProbability, analyticExpirationProbability);
 //		System.out.println(lambda + "\t"
 //				+ SimulationStatistics.getInstance().getBlockingProbability()
 //				+ "\t\t\t"

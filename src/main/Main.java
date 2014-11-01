@@ -1,5 +1,6 @@
 package main;
 
+import simulator.ErrorCalculator;
 import simulator.Simulator;
 
 public class Main {
@@ -13,13 +14,19 @@ public class Main {
 		
 		boolean isExponential = Integer.parseInt(args[0])==1?true:false;
 		int population = Integer.parseInt(args[1]);
+		ErrorCalculator blockError = new ErrorCalculator();
+		ErrorCalculator expiredError = new ErrorCalculator();
 		
-		for(double lambda=0.1;lambda<=20;lambda+=0.1)
+		for(double lambda=0.1;lambda<=20.05;lambda+=0.1)
 		{
 			Simulator simulator = new Simulator(population, isExponential);
 			simulator.setLambda(lambda);
-			simulator.simulate();
-		}		
+			simulator.simulate(blockError, expiredError);
+		}
+		System.out.println("\nBlocking Error:");
+		System.out.printf("Average:%.4f \nMax: %.4f\n", blockError.getAverageError(), blockError.getMaxError());
+		System.out.println("\nExpiration Error:");
+		System.out.printf("Average:%.4f \nMax: %.4f", expiredError.getAverageError(), expiredError.getMaxError());
 	}
 	
 	private static void printUsageRules()

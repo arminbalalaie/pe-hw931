@@ -17,6 +17,7 @@ public class Main {
 		ErrorCalculator blockError = new ErrorCalculator();
 		ErrorCalculator expiredError = new ErrorCalculator();
 		
+		System.out.println("lambda\tS_Block\tS_Expir\tA_Block\tA_Expir");
 		for(double lambda=0.1;lambda<=20.05;lambda+=0.1)
 		{
 			Simulator simulator = new Simulator(population, isExponential);

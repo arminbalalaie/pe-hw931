@@ -1,6 +1,7 @@
 package events;
 
 import simulator.Job;
+import simulator.JobQueue;
 import simulator.Simulator;
 
 public class ExpireJobEvent extends Event {
@@ -9,11 +10,11 @@ public class ExpireJobEvent extends Event {
 		super(simulator, job, triggerTime);
 		// TODO Auto-generated constructor stub
 	}
-
+	
 	@Override
 	public void doIt() {
 		if (this.job.expire())
-			this.simulator.getJobQueue().remove(this.job);
+			job.getQueue().remove(this.job);
 
 	}
 

@@ -7,11 +7,29 @@ public class JobQueue
 {
 	private int queueSize;
 	private LinkedList<Job> jobs;
+	private int availableServers;
+	private int serverCount;
 	
-	public JobQueue(int size)
+	public JobQueue(int size, int serverCount)
 	{
 		queueSize = size;
 		jobs = new LinkedList<Job>();
+		this.serverCount = serverCount;
+		availableServers = serverCount;
+	}
+	
+	public void occupyServer() {
+		if (availableServers > 0)
+			availableServers--;
+	}
+
+	public void releaseServer() {
+		if (availableServers < serverCount)
+			availableServers++;
+	}
+
+	public boolean isServerAvailable() {
+		return availableServers > 0 ? true : false;
 	}
 	
 	public boolean enqueue(Job job)
@@ -36,6 +54,11 @@ public class JobQueue
 	public int getQueueSize()
 	{
 		return jobs.size();
+	}
+	
+	public int getAvailableCapacity()
+	{
+		return queueSize-jobs.size();
 	}
 	
 	public boolean isEmpty() {

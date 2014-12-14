@@ -10,8 +10,9 @@ import events.CreateJobEvent;
 import events.Event;
 
 public class Simulator {
-	private int queueSize = 10;
-	private JobQueue jobQueue;
+	private int[] queueSizes = {10, 12};
+	private int queueCount = 2;
+	private JobQueue[] jobQueues;
 	private EventsHeap eventsHeap;
 	private int serverCount = 2;
 	private int availableServers = 2;
@@ -29,14 +30,39 @@ public class Simulator {
 	public Simulator(int population, boolean isExponential) {
 		this.population = population;
 		isExponentialDeadline = isExponential;
-		jobQueue = new JobQueue(queueSize);
+		for(int i=0;i<queueCount;i++)
+			jobQueues[i] = new JobQueue(queueSizes[i],1);
 		this.eventsHeap = new EventsHeap(10000);
 		this.clock = 0;
 
 	}
-
-	public JobQueue getJobQueue() {
-		return jobQueue;
+	
+	public boolean isQueueAvailable()
+	{
+		for(int i=0;i<queueCount;i++)
+			if(!jobQueues[i].isFull())
+				return true;
+		return false;
+	}
+	
+	public JobQueue getAvailableQueue()
+	{
+		JobQueue ret = null;
+		int maxCapacity = 0;
+		for(int i=0;i<queueCount;i++)
+		{
+			if(jobQueues[i].getAvailableCapacity()>maxCapacity)
+			{
+				maxCapacity = jobQueues[i].getAvailableCapacity();
+				ret = jobQueues[i];
+			}
+		}
+		
+		return ret;
+	}
+	
+	public JobQueue getJobQueue(int num) {
+		return jobQueues[num];
 	}
 
 	public EventsHeap getEventsHeap() {
@@ -60,20 +86,6 @@ public class Simulator {
 		Job newJob = new Job(processingTime, startTime, deadlineTime);
 		totalJobCreated++;
 		return newJob;
-	}
-
-	public void occupyServer() {
-		if (availableServers > 0)
-			availableServers--;
-	}
-
-	public void releaseServer() {
-		if (availableServers < serverCount)
-			availableServers++;
-	}
-
-	public boolean isServerAvailable() {
-		return availableServers > 0 ? true : false;
 	}
 
 	public void resetJobGenerator() {
@@ -103,24 +115,23 @@ public class Simulator {
 			event.doIt();
 		}
 
-		Analytical anal = isExponentialDeadline ? new ExponentialAnalytical(
-				queueSize + serverCount, lambda, 2) : new ConstantAnalytical(
-				queueSize + serverCount, lambda, 2);
-		double analyticBlockingProbability = anal.pN(queueSize+serverCount);
-		double analyticExpirationProbability = anal.pD();
+//		Analytical anal = isExponentialDeadline ? new ExponentialAnalytical(
+//				queueSize + serverCount, lambda, 2) : new ConstantAnalytical(
+//				queueSize + serverCount, lambda, 2);
+//		double analyticBlockingProbability = anal.pN(queueSize+serverCount);
+//		double analyticExpirationProbability = anal.pD();
 		double simulationBlockingProbability = SimulationStatistics
 				.getInstance().getBlockingProbability();
 		double simulationExpirationProbability = SimulationStatistics
 				.getInstance().getExpiredProbability();
-		// calculate error
-		blockError.addError(Math.abs(simulationBlockingProbability
-				- analyticBlockingProbability));
-		expiredError.addError(Math.abs(simulationExpirationProbability
-				- analyticExpirationProbability));
-		// print statistics
-		System.out.printf("%2.1f\t%.5f\t%.5f\t%.5f\t%.5f\t\n", lambda,
-				simulationBlockingProbability, simulationExpirationProbability,
-				analyticBlockingProbability, analyticExpirationProbability);
+//		// calculate error
+//		blockError.addError(Math.abs(simulationBlockingProbability
+//				- analyticBlockingProbability));
+//		expiredError.addError(Math.abs(simulationExpirationProbability
+//				- analyticExpirationProbability));
+//		// print statistics
+		System.out.printf("%2.1f\t%.5f\t%.5f\t\n", lambda,
+				simulationBlockingProbability, simulationExpirationProbability);
 		// System.out.println(lambda + "\t"
 		// + SimulationStatistics.getInstance().getBlockingProbability()
 		// + "\t\t\t"

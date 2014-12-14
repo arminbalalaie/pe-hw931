@@ -1,6 +1,7 @@
 package events;
 
 import simulator.Job;
+import simulator.JobQueue;
 import simulator.Simulator;
 
 public class EnqueueJobEvent extends Event {
@@ -14,17 +15,20 @@ public class EnqueueJobEvent extends Event {
 
 	@Override
 	public void doIt() {
-		if(simulator.getJobQueue().enqueue(job))
+		if(simulator.isQueueAvailable())
 		{
+			JobQueue queue = simulator.getAvailableQueue();
+			job.setQueue(queue);
+			queue.enqueue(job);
 			job.enqueue();
-			if (simulator.isServerAvailable() && simulator.getJobQueue().getQueueSize()==1) 
+			if (queue.isServerAvailable() && queue.getQueueSize()==1) 
 			{
 				Event endProcessEvent = new EndProcessEvent(simulator, job, job.getStartTime()+job.getProcessingTime());
-				simulator.occupyServer();
+				queue.occupyServer();
 				simulator.getEventsHeap().pushToEvents(endProcessEvent);
-				simulator.getJobQueue().dequeue();
+				queue.dequeue();
 				job.startProcess();
-			} 
+			} 	
 			else
 			{
 				ExpireJobEvent jobEvent = new ExpireJobEvent(simulator, job, job.getDeadlineTime());

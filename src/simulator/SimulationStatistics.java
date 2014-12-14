@@ -1,14 +1,18 @@
 package simulator;
 
+import java.util.HashMap;
+
 public class SimulationStatistics {
 	private static SimulationStatistics instance=null;
-	private double blocked=0;
-	private double expired=0;
-	private double finished=0;
+	private HashMap<JobQueue, Double> blocked;
+	private HashMap<JobQueue, Double> expired;
+	private HashMap<JobQueue, Double> finished;
 	
 	public SimulationStatistics()
 	{
-		
+		blocked = new HashMap<>();
+		expired = new HashMap<>();
+		finished = new HashMap<>();
 	}
 	
 	public static SimulationStatistics getInstance()
@@ -20,41 +24,47 @@ public class SimulationStatistics {
 	
 	public void reset()
 	{
-		blocked=0;
-		expired=0;
-		finished=0;
+		blocked = new HashMap<>();
+		expired = new HashMap<>();
+		finished = new HashMap<>();
 	}
 	
-	public void incrementExpired()
+	public void incrementExpired(JobQueue queue)
 	{
-		expired++;
+		if(expired.get(queue)==null)
+			expired.put(queue, 0.0);
+		expired.put(queue, expired.get(queue)+1);
 	}
 	
-	public void incrementBlocked()
+	public void incrementBlocked(JobQueue queue)
 	{
-		blocked++;
+		if(blocked.get(queue)==null)
+			blocked.put(queue, 0.0);
+		blocked.put(queue, blocked.get(queue)+1);
 	}
 	
-	public void incrementFinished()
+	public void incrementFinished(JobQueue queue)
 	{
-		finished++;
+		if(finished.get(queue)==null)
+			finished.put(queue, 0.0);
+		finished.put(queue, finished.get(queue)+1);
 	}
 	
-	public double getDepartureProbability()
+	public double getDepartureProbability(JobQueue queue)
 	{
 //		System.out.println("finished:" + finished);
-		return finished/(finished+blocked+expired);
+		return finished.get(queue)/(finished.get(queue)+blocked.get(queue)+expired.get(queue));
 	}
 	
-	public double getBlockingProbability()
+	public double getBlockingProbability(JobQueue queue)
 	{
 //		System.out.println("blocked : " + blocked);
-		return blocked/(finished+blocked+expired);
+		return blocked.get(queue)/(finished.get(queue)+blocked.get(queue)+expired.get(queue));
 	}
 	
-	public double getExpiredProbability()
+	public double getExpiredProbability(JobQueue queue)
 	{
 //		System.out.println("blocked : " + blocked);
-		return expired/(finished+blocked+expired);
+		return expired.get(queue)/(finished.get(queue)+blocked.get(queue)+expired.get(queue));
 	}
 }

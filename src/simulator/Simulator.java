@@ -47,11 +47,15 @@ public class Simulator {
 		JobQueue ret = null;
 		int maxCapacity = 0;
 		
-		if(!jobQueues[1].isFull() && jobQueues[0].getQueueSize()>jobQueues[1].getQueueSize())
+		if(jobQueues[0].isFull())
+			return jobQueues[1];
+		else if(jobQueues[1].isFull())
+			return jobQueues[0];
+		else if(jobQueues[0].getQueueSize()>jobQueues[1].getQueueSize())
 		{
 			return jobQueues[1];
 		}
-		else if(!jobQueues[0].isFull() && jobQueues[0].getQueueSize()<jobQueues[1].getQueueSize())
+		else if(jobQueues[0].getQueueSize()<jobQueues[1].getQueueSize())
 		{
 			return jobQueues[0];
 		}

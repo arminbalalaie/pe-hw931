@@ -5,7 +5,7 @@ import java.util.LinkedList;
 
 public class JobQueue
 {
-	private int queueSize;
+	public int queueSize;
 	private LinkedList<Job> jobs;
 	private int availableServers;
 	private int serverCount;
@@ -34,6 +34,7 @@ public class JobQueue
 	
 	public boolean enqueue(Job job)
 	{
+		
 		if(jobs.size()<queueSize)
 		{
 			jobs.add(job);

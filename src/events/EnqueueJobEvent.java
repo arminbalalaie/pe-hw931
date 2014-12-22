@@ -37,7 +37,9 @@ public class EnqueueJobEvent extends Event {
 			
 		}
 		else
+		{
 			job.block();
+		}
 	}
 
 }

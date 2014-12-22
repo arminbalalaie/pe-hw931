@@ -1,8 +1,6 @@
 package simulator;
 
-import analytic.Analytical;
-import analytic.ConstantAnalytical;
-import analytic.ExponentialAnalytical;
+import java.util.Random;
 import random.ConstantGenerator;
 import random.ExponentialGenerator;
 import random.RandomGenerator;
@@ -14,8 +12,6 @@ public class Simulator {
 	private int queueCount = 2;
 	private JobQueue[] jobQueues;
 	private EventsHeap eventsHeap;
-	private int serverCount = 2;
-	private int availableServers = 2;
 	private double lambda;
 	private double meanWaitTime = 2;
 	private double serviceTimeAverage = 1;
@@ -30,6 +26,7 @@ public class Simulator {
 	public Simulator(int population, boolean isExponential) {
 		this.population = population;
 		isExponentialDeadline = isExponential;
+		jobQueues = new JobQueue[queueCount];
 		for(int i=0;i<queueCount;i++)
 			jobQueues[i] = new JobQueue(queueSizes[i],1);
 		this.eventsHeap = new EventsHeap(10000);
@@ -55,6 +52,13 @@ public class Simulator {
 			{
 				maxCapacity = jobQueues[i].getAvailableCapacity();
 				ret = jobQueues[i];
+			}
+			else if(jobQueues[i].getAvailableCapacity()==maxCapacity){
+				Random r = new Random();
+				if(r.nextDouble() > 0.5)
+					return jobQueues[0];
+				else
+					return jobQueues[1];
 			}
 		}
 		
@@ -122,16 +126,18 @@ public class Simulator {
 //		double analyticExpirationProbability = anal.pD();
 		double simulationBlockingProbability = SimulationStatistics
 				.getInstance().getBlockingProbability();
-		double simulationExpirationProbability = SimulationStatistics
-				.getInstance().getExpiredProbability();
+		double simulationExpirationProbability1 = SimulationStatistics
+				.getInstance().getExpiredProbability(jobQueues[0]);
+		double simulationExpirationProbability2 = SimulationStatistics
+				.getInstance().getExpiredProbability(jobQueues[1]);
 //		// calculate error
 //		blockError.addError(Math.abs(simulationBlockingProbability
 //				- analyticBlockingProbability));
 //		expiredError.addError(Math.abs(simulationExpirationProbability
 //				- analyticExpirationProbability));
 //		// print statistics
-		System.out.printf("%2.1f\t%.5f\t%.5f\t\n", lambda,
-				simulationBlockingProbability, simulationExpirationProbability);
+		System.out.printf("%2.1f\t%.4f\t%.4f\t%.4f\t\n", lambda,
+				simulationBlockingProbability, simulationExpirationProbability1,simulationExpirationProbability2);
 		// System.out.println(lambda + "\t"
 		// + SimulationStatistics.getInstance().getBlockingProbability()
 		// + "\t\t\t"

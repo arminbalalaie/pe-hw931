@@ -1,7 +1,5 @@
 package simulator;
 
-import random.ExponentialGenerator;
-import random.RandomGenerator;
 
 public class Job {
 	JobState state=null;
@@ -67,7 +65,7 @@ public class Job {
 		if (state == JobState.CREATED)
 		{
 			state = JobState.BLOCKED;
-			SimulationStatistics.getInstance().incrementBlocked(queue);
+			SimulationStatistics.getInstance().incrementBlocked();
 		}
 	}
 

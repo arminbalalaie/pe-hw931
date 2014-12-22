@@ -8,7 +8,7 @@ import events.CreateJobEvent;
 import events.Event;
 
 public class Simulator {
-	private int[] queueSizes = {10, 12};
+	private int[] queueSizes = {9, 11};
 	private int queueCount = 2;
 	private JobQueue[] jobQueues;
 	private EventsHeap eventsHeap;
@@ -46,23 +46,24 @@ public class Simulator {
 	{
 		JobQueue ret = null;
 		int maxCapacity = 0;
-		for(int i=0;i<queueCount;i++)
-		{
-			if(jobQueues[i].getAvailableCapacity()>maxCapacity)
-			{
-				maxCapacity = jobQueues[i].getAvailableCapacity();
-				ret = jobQueues[i];
-			}
-			else if(jobQueues[i].getAvailableCapacity()==maxCapacity){
-				Random r = new Random();
-				if(r.nextDouble() > 0.5)
-					return jobQueues[0];
-				else
-					return jobQueues[1];
-			}
-		}
 		
-		return ret;
+		if(!jobQueues[1].isFull() && jobQueues[0].getQueueSize()>jobQueues[1].getQueueSize())
+		{
+			return jobQueues[1];
+		}
+		else if(!jobQueues[0].isFull() && jobQueues[0].getQueueSize()<jobQueues[1].getQueueSize())
+		{
+			return jobQueues[0];
+		}
+		else{
+			Random r = new Random();
+			double rand = r.nextDouble();
+//			System.out.println(rand);
+			if(rand > 0.5)
+				return jobQueues[1];
+			else
+				return jobQueues[0];
+		}
 	}
 	
 	public JobQueue getJobQueue(int num) {

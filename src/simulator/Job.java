@@ -38,7 +38,10 @@ public class Job {
 	public void enqueue() {
 //		System.out.println("enqueue");
 		if (state == JobState.CREATED)
+		{
 			state = JobState.SCHEDULED;
+			SimulationStatistics.getInstance().incrementEnqueue(queue);
+		}
 	}
 
 	public boolean expire() {

@@ -9,12 +9,14 @@ public class SimulationStatistics {
 	private double blocked;
 	private HashMap<JobQueue, Double> expired;
 	private HashMap<JobQueue, Double> finished;
+	private HashMap<JobQueue, Double> enqueue;
 	
 	public SimulationStatistics()
 	{
 		blocked = 0.0;
 		expired = new HashMap<JobQueue, Double>();
 		finished = new HashMap<JobQueue, Double>();
+		enqueue = new HashMap<JobQueue, Double>(); 
 	}
 	
 	public static SimulationStatistics getInstance()
@@ -29,6 +31,14 @@ public class SimulationStatistics {
 		blocked = 0.0;
 		expired = new HashMap<JobQueue, Double>();
 		finished = new HashMap<JobQueue, Double>();
+		enqueue = new HashMap<JobQueue, Double>();
+	}
+	
+	public void incrementEnqueue(JobQueue queue)
+	{
+		if(enqueue.get(queue)==null)
+			enqueue.put(queue, 0.0);
+		enqueue.put(queue, enqueue.get(queue)+1);
 	}
 	
 	public void incrementExpired(JobQueue queue)
@@ -85,8 +95,7 @@ public class SimulationStatistics {
 			f += finished.get(queue);
 			e += expired.get(queue);
 		}
-		System.out.println(b);
-		System.out.println(e+b+f);
+
 		return b/(e+b+f);
 	}
 	
